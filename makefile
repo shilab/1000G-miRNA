@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-all: Data data/miRNA_positions data/gene_positions data/miRNA_expression data/gene_expression data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos
+all: Data Code 
 
 setup: 
 	mkdir data
@@ -9,7 +9,12 @@ setup:
 clean:
 	rm results/*
 
-Data: data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt
+Data: data/miRNA_positions data/gene_positions data/miRNA_expression.out data/gene_expression.out data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos
+
+Code: code/overlap.py
+
+code/overlap.py:
+	curl https://raw.githubusercontent.com/shilab/sample_overlap/master/overlap.py > code/overlap.py
 
 data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt: 
 	wget -P ./data ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/GEUV/E-GEUV-2/analysis_results/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt
@@ -39,3 +44,8 @@ data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix: data/ALL.wgs.mergedS
 	perl code/parse.pl data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf
 
 data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos: data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix
+
+data/miRNA_expression.out: data/miRNA_expression data/gene_expression code/overlap.py
+	python code/overlap.py data/miRNA_expression data/gene_expression
+
+data/gene_expression.out: data/miRNA_expression.out
