@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-all: Data data/miRNA_positions data/gene_positions data/miRNA_expression data/gene_expression
+all: Data data/miRNA_positions data/gene_positions data/miRNA_expression data/gene_expression data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos
 
 setup: 
 	mkdir data
@@ -34,3 +34,8 @@ data/miRNA_expression: data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.tx
 
 data/gene_expression: data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt
 	paste <(cut -f 1 data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt) <(cut -f 5- data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt) > data/gene_expression
+
+data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix: data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf
+	perl code/parse.pl data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf
+
+data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos: data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix
