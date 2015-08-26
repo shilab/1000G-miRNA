@@ -24,8 +24,9 @@ def get_positions(names, filename, outputfile):
                 end = fields[4]
                 name = fields[-1].split('=')[-2].split(';')[-2]
                 id = fields[-1].split('=')[1].split(';')[0].split('_')[-1]
+                #Extracts mosts of miRNA positions, still needs to be tweaked
                 if name in names:
-                    print(name + '\t' + chromosome + '\t' + start + '\t' + end)
+                    print(name + '\t' + chromosome + '\t' + start + '\t' + end, file=fo)
                 else:
                     if (name + '-3p') in names:
                         print(name + '-3p')
@@ -33,11 +34,11 @@ def get_positions(names, filename, outputfile):
                         print(name + '-5p')
                     nameArray = name.split('-')
                     if len(nameArray)==4 and (nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-'+nameArray[3]) in names:
-                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-'+nameArray[3])
+                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-'+nameArray[3], file=fo)
                     if len(nameArray)==3 and (nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-3p') in names:
-                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-3p')
+                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-3p', file=fo)
                     if len(nameArray)==3 and (nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-5p') in names:
-                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-5p')
+                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-5p', file=fo)
 
 
 def main():
