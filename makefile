@@ -27,18 +27,21 @@ data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt:
 	wget -P ./data http://www.ebi.ac.uk/arrayexpress/files/E-GEUV-1/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.gz
 	gunzip data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.gz
 
-#TODO: Download start and end positions for miRNA and genes to make analysis more accurate
-data/miRNA_positions: data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt
-	cut -f 2-4 data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt > data/miRNA_positions
+data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.newID: data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt
+	sed 's/\.[0-9]\{1,2\}\t/\t/g' data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt > data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.newID
 
-data/gene_positions: data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt
-	cut -f 2-4 data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt > data/gene_positions
+#TODO:Update miRNA and gene positions to GRCh38
+data/miRNA_positions: data/hsa.gff3
+	python code/extract_miRNA_position.py data/miRNA_expression data/hsa.gff3 data/miRNA_position
+
+data/gene_positions: data/Homo_sapiens.GRCh37.75.gtf
+	python code/extract_gene_position.py data/Homo_sapiens.GRCh37.75.gtf data/gene_positions
 
 data/miRNA_expression: data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt
 	paste <(cut -f 1 data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt) <(cut -f 5- data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt) > data/miRNA_expression
 
-data/gene_expression: data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt
-	paste <(cut -f 1 data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt) <(cut -f 5- data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt) > data/gene_expression
+data/gene_expression: data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.newID
+	paste <(cut -f 1 data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.newID) <(cut -f 5- data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.newID) > data/gene_expression
 
 data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix: data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf
 	perl code/parse.pl data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf
@@ -49,3 +52,10 @@ data/miRNA_expression.out: data/miRNA_expression data/gene_expression code/overl
 	python code/overlap.py data/miRNA_expression data/gene_expression
 
 data/gene_expression.out: data/miRNA_expression.out
+
+data/Homo_sapiens.GRCh37.75.gtf:
+	wget -P ./data ftp://ftp.ensembl.org/pub/grch37/release-81/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
+	gunzip data/Homo_sapiens.GRCh37.75.gtf.gz
+
+data/hsa.gff3:
+	wget -P ./data ftp://mirbase.org/pub/mirbase/18/genomes/hsa.gff3
