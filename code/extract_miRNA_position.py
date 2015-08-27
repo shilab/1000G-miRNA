@@ -34,11 +34,11 @@ def get_positions(names, filename, outputfile):
                         print(name + '-5p')
                     nameArray = name.split('-')
                     if len(nameArray)==4 and (nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-'+nameArray[3]) in names:
-                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-'+nameArray[3], file=fo)
+                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-'+nameArray[3]+ '\t' + chromosome + '\t' + start + '\t' + end, file=fo)
                     if len(nameArray)==3 and (nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-3p') in names:
-                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-3p', file=fo)
+                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-3p'+ '\t' + chromosome + '\t' + start + '\t' + end, file=fo)
                     if len(nameArray)==3 and (nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-5p') in names:
-                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-5p', file=fo)
+                        print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-5p'+ '\t' + chromosome + '\t' + start + '\t' + end, file=fo)
 
 
 def main():
