@@ -30,7 +30,6 @@ data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt:
 data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.newID: data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt
 	sed 's/\.[0-9]\{1,2\}\t/\t/g' data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt > data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.newID
 
-#TODO:Update miRNA and gene positions to GRCh38
 data/miRNA_positions: data/hsa.gff3
 	python code/extract_miRNA_position.py data/miRNA_expression data/hsa.gff3 data/miRNA_position
 
