@@ -1,3 +1,4 @@
+#TODO:Fix last 10
 from __future__ import print_function
 import sys
 
@@ -29,9 +30,9 @@ def get_positions(names, filename, outputfile):
                     print(name + '\t' + chromosome + '\t' + start + '\t' + end, file=fo)
                 else:
                     if (name + '-3p') in names:
-                        print(name + '-3p')
+                        print(name + '-3p' + '\t' + chromosome + '\t' + start + '\t' + end, file=fo)
                     if (name + '-5p') in names:
-                        print(name + '-5p')
+                        print(name + '-5p'+ '\t' + chromosome + '\t' + start + '\t' + end, file=fo)
                     nameArray = name.split('-')
                     if len(nameArray)==4 and (nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-'+nameArray[3]) in names:
                         print(nameArray[0]+'-'+nameArray[1]+'-'+nameArray[2]+'-'+id+'-'+nameArray[3]+ '\t' + chromosome + '\t' + start + '\t' + end, file=fo)
