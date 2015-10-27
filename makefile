@@ -9,7 +9,7 @@ setup:
 clean:
 	rm results/*
 
-Data: data/miRNA_positions data/gene_positions data/miRNA_expression.out data/gene_expression.out data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos
+Data: data/miRNA_positions data/gene_positions data/miRNA_expression.out.norm data/gene_expression.out.norm data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos
 
 Code: code/overlap.py
 
@@ -31,7 +31,7 @@ data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.newID: data/GD462.GeneQuantR
 	sed 's/\.[0-9]\{1,2\}\t/\t/g' data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt > data/GD462.GeneQuantRPKM.50FN.samplename.resk10.txt.newID
 
 data/miRNA_positions: data/hsa.gff3
-	python code/extract_miRNA_position.py data/miRNA_expression data/hsa.gff3 data/miRNA_position
+	python code/extract_miRNA_position.py data/miRNA_expression data/hsa.gff3 data/miRNA_positions
 
 data/gene_positions: data/Homo_sapiens.GRCh37.75.gtf
 	python code/extract_gene_position.py data/Homo_sapiens.GRCh37.75.gtf data/gene_positions
@@ -51,6 +51,11 @@ data/miRNA_expression.out: data/miRNA_expression data/gene_expression code/overl
 	python code/overlap.py data/miRNA_expression data/gene_expression
 
 data/gene_expression.out: data/miRNA_expression.out
+
+data/miRNA_expression.out.norm: data/miRNA_expression.out data/gene_expression.out
+	R --no-save < code/normalize.R
+
+data/gene_expression.out.norm: data/miRNA_expression.out.norm
 
 data/Homo_sapiens.GRCh37.75.gtf:
 	wget -P ./data ftp://ftp.ensembl.org/pub/grch37/release-81/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
