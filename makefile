@@ -9,12 +9,12 @@ setup:
 clean:
 	rm results/*
 
-Data: data/miRNA_positions data/gene_positions data/miRNA_expression.out.norm data/gene_expression.out.norm data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos
+Data: data/miRNA_positions data/gene_positions data/miRNA_expression.out.norm data/gene_expression.out.norm data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix.out
 
 Code: code/overlap.py
 
 code/overlap.py:
-	curl https://raw.githubusercontent.com/shilab/sample_overlap/master/overlap.py > code/overlap.py
+	curl https://raw.githubusercontent.com/shilab/sample_overlap/master/overlap/overlap.py > code/overlap.py
 
 data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt: 
 	wget -P ./data ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/GEUV/E-GEUV-2/analysis_results/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt
@@ -47,8 +47,8 @@ data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix: data/ALL.wgs.mergedS
 
 data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos: data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix
 
-data/miRNA_expression.out: data/miRNA_expression data/gene_expression code/overlap.py
-	python code/overlap.py data/miRNA_expression data/gene_expression
+data/miRNA_expression.out: data/miRNA_expression data/gene_expression data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix code/overlap.py
+	python code/overlap.py data/miRNA_expression data/gene_expression data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix -k 1
 
 data/gene_expression.out: data/miRNA_expression.out
 
