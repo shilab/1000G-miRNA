@@ -11,10 +11,13 @@ clean:
 
 Data: data/miRNA_positions data/gene_positions data/miRNA_expression.out.norm data/gene_expression.out.norm data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix.out
 
-Code: code/overlap.py
+Code: code/overlap.py code/mxeqtl.R
 
 code/overlap.py:
 	curl https://raw.githubusercontent.com/shilab/sample_overlap/master/overlap/overlap.py > code/overlap.py
+
+code/mxeqtl.R:
+	curl https://raw.githubusercontent.com/shilab/meQTL_functions/master/R/mxeqtl.R > code/mxeqtl.R
 
 data/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt: 
 	wget -P ./data ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/GEUV/E-GEUV-2/analysis_results/GD452.MirnaQuantCount.1.2N.50FN.samplename.resk10.txt
@@ -46,6 +49,9 @@ data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix: data/ALL.wgs.mergedS
 	perl code/parse.pl data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf
 
 data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos: data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix
+
+data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix.out.meqtl_pos: data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix.out
+	perl code/pos.pl data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix.out data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.pos
 
 data/miRNA_expression.out: data/miRNA_expression data/gene_expression data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix code/overlap.py
 	python code/overlap.py data/miRNA_expression data/gene_expression data/ALL.wgs.mergedSV.v3.20130502.svs.genotypes.vcf.matrix -k 1
